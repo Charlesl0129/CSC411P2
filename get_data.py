@@ -20,10 +20,10 @@ os.chdir(os.path.dirname(__file__))
 if os.path.exists('CSC411P1'):
     shutil.rmtree('CSC411P1')
     
-os.mkdir('final_male')
-os.mkdir('final_female')
-os.mkdir('uncropped_female')
-os.mkdir('uncropped_male')
+# os.mkdir('final_male')
+# os.mkdir('final_female')
+# os.mkdir('uncropped_female')
+# os.mkdir('uncropped_male')
 os.mkdir('final_male10')
 os.mkdir('final_female10')
 os.mkdir('uncropped_female10')
@@ -79,80 +79,80 @@ def timeout(func, args=(), kwargs={}, timeout_duration=1, default=None):
 
 testfile = urllib.URLopener()            
 
-#Note: you need to create the uncropped folder first in order 
-#for this to work
+# #Note: you need to create the uncropped folder first in order 
+# #for this to work
 
 
-#download, crop, convert to grayscale --> actresses
-for a in act:
-    name = a.split()[1].lower()
-    i = 0
-    for line in open("facescrub_actresses.txt"):
-        if a in line:
-            filename = name+str(i)+'.'+line.split()[4].split('.')[-1]
-            timeout(testfile.retrieve, (line.split()[4], "uncropped_female/"+filename), {}, 10)
-            if not os.path.isfile("uncropped_female/"+filename):
-                continue
+# #download, crop, convert to grayscale --> actresses
+# for a in act:
+#     name = a.split()[1].lower()
+#     i = 0
+#     for line in open("facescrub_actresses.txt"):
+#         if a in line:
+#             filename = name+str(i)+'.'+line.split()[4].split('.')[-1]
+#             timeout(testfile.retrieve, (line.split()[4], "uncropped_female/"+filename), {}, 10)
+#             if not os.path.isfile("uncropped_female/"+filename):
+#                 continue
     
-            print filename
-            i += 1
+#             print filename
+#             i += 1
             
-            try:
-                #test for validity:
-                test = Image.open("uncropped_female/"+filename) 
-                #read the image:
-                im = imread ("uncropped_female/"+filename)
-                #convert to grayscale:
-                im_gray = rgb2gray(im)
-                #cropping:
-                b_box = line.split()[5]
-                cropped_im_gray = im_gray[int(b_box.split(',')[1]):int(b_box.split(',')[3]),int(b_box.split(',')[0]):int(b_box.split(',')[2])]
-                #resizing:
-                final_im = imresize(cropped_im_gray,(32,32))
-                #saving:
-                plt.imsave("final_female/"+filename,final_im,cmap = cm.gray)
-            except Exception as e:
-                print (e)
-                continue
+#             try:
+#                 #test for validity:
+#                 test = Image.open("uncropped_female/"+filename) 
+#                 #read the image:
+#                 im = imread ("uncropped_female/"+filename)
+#                 #convert to grayscale:
+#                 im_gray = rgb2gray(im)
+#                 #cropping:
+#                 b_box = line.split()[5]
+#                 cropped_im_gray = im_gray[int(b_box.split(',')[1]):int(b_box.split(',')[3]),int(b_box.split(',')[0]):int(b_box.split(',')[2])]
+#                 #resizing:
+#                 final_im = imresize(cropped_im_gray,(32,32))
+#                 #saving:
+#                 plt.imsave("final_female/"+filename,final_im,cmap = cm.gray)
+#             except Exception as e:
+#                 print (e)
+#                 continue
                 
-#download, crop, convert to grayscale --> actors            
-for a in act:
-    name = a.split()[1].lower()
-    i = 0
-    for line in open("facescrub_actors.txt"):
-        if a in line:
-            filename = name+str(i)+'.'+line.split()[4].split('.')[-1]
-            timeout(testfile.retrieve, (line.split()[4], "uncropped_male/"+filename), {}, 10)
-            if not os.path.isfile("uncropped_male/"+filename): 
-                continue
+# #download, crop, convert to grayscale --> actors            
+# for a in act:
+#     name = a.split()[1].lower()
+#     i = 0
+#     for line in open("facescrub_actors.txt"):
+#         if a in line:
+#             filename = name+str(i)+'.'+line.split()[4].split('.')[-1]
+#             timeout(testfile.retrieve, (line.split()[4], "uncropped_male/"+filename), {}, 10)
+#             if not os.path.isfile("uncropped_male/"+filename): 
+#                 continue
 
-            print filename
-            i += 1
+#             print filename
+#             i += 1
             
-            try:
-                #test for validity:
-                test = Image.open("uncropped_male/"+filename) 
-                #read the image:
-                im = imread ("uncropped_male/"+filename)
-                #convert to grayscale:
-                im_gray = rgb2gray(im)
-                #cropping:
-                b_box = line.split()[5]
-                cropped_im_gray = im_gray[int(b_box.split(',')[1]):int(b_box.split(',')[3]),int(b_box.split(',')[0]):int(b_box.split(',')[2])]
-                #resizing:
-                final_im = imresize(cropped_im_gray,(32,32))
-                #saving:
-                plt.imsave("final_male/"+filename,final_im,cmap = cm.gray)
-            except Exception as e:
-                print (e)
-                continue 
+#             try:
+#                 #test for validity:
+#                 test = Image.open("uncropped_male/"+filename) 
+#                 #read the image:
+#                 im = imread ("uncropped_male/"+filename)
+#                 #convert to grayscale:
+#                 im_gray = rgb2gray(im)
+#                 #cropping:
+#                 b_box = line.split()[5]
+#                 cropped_im_gray = im_gray[int(b_box.split(',')[1]):int(b_box.split(',')[3]),int(b_box.split(',')[0]):int(b_box.split(',')[2])]
+#                 #resizing:
+#                 final_im = imresize(cropped_im_gray,(32,32))
+#                 #saving:
+#                 plt.imsave("final_male/"+filename,final_im,cmap = cm.gray)
+#             except Exception as e:
+#                 print (e)
+#                 continue 
 
-to_remove_male = ['baldwin66.jpg','carell92.jpg','hader4.jpg','hader62.jpg','hader97.jpg']
-to_remove_female = ['bracco92.jpg','harmon50.jpg']
-for bad_file in to_remove_male:
-    os.remove ('final_male/'+bad_file)
-for bad_file in to_remove_female:
-    os.remove ('final_female/'+bad_file)
+# to_remove_male = ['baldwin66.jpg','carell92.jpg','hader4.jpg','hader62.jpg','hader97.jpg']
+# to_remove_female = ['bracco92.jpg','harmon50.jpg']
+# for bad_file in to_remove_male:
+#     os.remove ('final_male/'+bad_file)
+# for bad_file in to_remove_female:
+#     os.remove ('final_female/'+bad_file)
 
                 
                 
@@ -222,4 +222,7 @@ to_remove_female = ['bracco92.jpg','harmon50.jpg']
 for bad_file in to_remove_male:
     os.remove ('final_male10/'+bad_file)
 for bad_file in to_remove_female:
-    os.remove ('final_female10/'+bad_file)
+    os.remove ('final_female10/'+bad_file
+
+
+        
